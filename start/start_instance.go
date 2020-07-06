@@ -12,7 +12,7 @@ type PubSubMessage struct {
 func StartInstance(ctx context.Context, m PubSubMessage) error {
 	name := string(m.Data)
 	if name == "" {
-		name = "daigo"
+		name = "Daigo"
 	}
 	log.Printf("Hello, %s!", name)
 	return nil
