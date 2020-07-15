@@ -9,11 +9,19 @@ import (
 	"google.golang.org/api/compute/v1"
 )
 
-type Message struct {
+var (
+	project  = os.Getenv("PROJECT")
+	zone     = os.Getenv("ZONE")
+	instance = os.Getenv("INSTANCE")
+)
+
+// PubSubMessage pub/sub message type
+type PubSubMessage struct {
 	Data []byte `json:"data"`
 }
 
-func StartInstance(ctx context.Context, m Message) error {
+// StartInstance start instance
+func StartInstance(ctx context.Context, m PubSubMessage) error {
 	c, err := google.DefaultClient(ctx, compute.CloudPlatformScope)
 	if err != nil {
 		log.Fatal(err)
@@ -23,9 +31,6 @@ func StartInstance(ctx context.Context, m Message) error {
 	if err != nil {
 		log.Fatal(err)
 	}
-	project := os.Getenv("PROJECT")
-	zone := os.Getenv("ZONE")
-	instance := os.Getenv("INSTANCE")
 
 	resp, err := computeService.Instances.Start(project, zone, instance).Context(ctx).Do()
 	if err != nil {
